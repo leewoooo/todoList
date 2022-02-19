@@ -3,7 +3,7 @@ package leewoooo.todo.service;
 import leewoooo.todo.domain.Todo;
 import leewoooo.todo.dto.todo.reqeust.CreateTodoRequest;
 import leewoooo.todo.dto.todo.reqeust.UpdateTodoRequest;
-import leewoooo.todo.exception.todo.CustomException;
+import leewoooo.todo.exception.todo.CustomHttpException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -52,7 +52,7 @@ class TodoServiceTest {
 
         //when
         //then
-        assertThrows(CustomException.class, () -> todoService.findOne(givenId));
+        assertThrows(CustomHttpException.class, () -> todoService.findOne(givenId));
     }
 
     @Test
@@ -73,15 +73,11 @@ class TodoServiceTest {
         //given
         Long givenId = TodoRepositoryStub.NOT_EXIST_ID;
 
-        UpdateTodoRequest req = UpdateTodoRequest
-                .builder()
-                .name("hello")
-                .completed(false)
-                .build();
+        UpdateTodoRequest req = new UpdateTodoRequest("hello", false);
 
         //when
         //then
-        assertThrows(CustomException.class, () -> todoService.update(givenId, req));
+        assertThrows(CustomHttpException.class, () -> todoService.update(givenId, req));
     }
 
     @Test
@@ -91,11 +87,7 @@ class TodoServiceTest {
         Long givenId = TodoRepositoryStub.EXIST_ID;
 
         //when
-        UpdateTodoRequest req = UpdateTodoRequest
-                .builder()
-                .name("change")
-                .completed(false)
-                .build();
+        UpdateTodoRequest req = new UpdateTodoRequest("change", false);
 
         Todo updated = todoService.update(givenId, req);
 
@@ -111,7 +103,7 @@ class TodoServiceTest {
 
         //when
         //then
-        assertThrows(CustomException.class, () -> todoService.removeById(givenId));
+        assertThrows(CustomHttpException.class, () -> todoService.removeById(givenId));
     }
 
     @Test
@@ -123,7 +115,7 @@ class TodoServiceTest {
         //when
         try {
             todoService.removeById(givenId);
-        }catch (CustomException e){
+        }catch (CustomHttpException e){
             fail("무조건 성공해야 한다.");
         }
     }
