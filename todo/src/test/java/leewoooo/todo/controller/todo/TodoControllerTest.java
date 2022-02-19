@@ -1,13 +1,12 @@
 package leewoooo.todo.controller.todo;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import leewoooo.todo.domain.Todo;
 import leewoooo.todo.dto.error.ErrorCode;
 import leewoooo.todo.dto.todo.reqeust.CreateTodoRequest;
 import leewoooo.todo.dto.todo.reqeust.UpdateTodoRequest;
 import leewoooo.todo.exception.todo.CustomHttpException;
-import leewoooo.todo.service.TodoService;
+import leewoooo.todo.service.todo.TodoService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,18 +34,19 @@ class TodoControllerTest {
     @Autowired
     ObjectMapper objectMapper; //for json
 
-    String todoResponseContent = "{\"id\":null,\"name\":\"hello\",\"completed\":false,\"completedAt\":null,\"createdAt\":null,\"updatedAt\":null}";
-    String badRequestContent = "{\"status\":400,\"message\":\"Bad Request\"}";
-    String notFoundContent = "{\"status\":404,\"message\":\"Not Found\"}";
+    final static String TODO_RESPONSE_CONTENT = "{\"id\":null,\"name\":\"Hello\",\"completed\":false,\"completedAt\":null,\"createdAt\":null,\"updatedAt\":null}";
+    final static String BAD_REQUEST_CONTENT = "{\"status\":400,\"message\":\"Bad Request\"}";
+    final static String NOT_FOUND_CONTENT = "{\"status\":404,\"message\":\"Not Found\"}";
+    final static String NAME = "Hello";
 
     @Test
     @DisplayName("todo register")
     void register() throws Exception {
         //given
-        CreateTodoRequest req = new CreateTodoRequest("hello");
+        CreateTodoRequest req = new CreateTodoRequest(NAME);
 
         Map<String, String> requestBody = new HashMap<>();
-        requestBody.put("name", "Hello");
+        requestBody.put("name", NAME);
 
         given(todoService.register(any(CreateTodoRequest.class))).willReturn(new Todo(req));
         //when
@@ -56,7 +56,7 @@ class TodoControllerTest {
                 )
                 //then
                 .andExpect(status().isCreated())
-                .andExpect(content().string(todoResponseContent))
+                .andExpect(content().string(TODO_RESPONSE_CONTENT))
                 .andDo(print())
                 .andReturn();
     }
@@ -70,7 +70,7 @@ class TodoControllerTest {
         mockMvc.perform(post("/todos"))
                 //then
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(badRequestContent))
+                .andExpect(content().string(BAD_REQUEST_CONTENT))
                 .andDo(print())
                 .andReturn();
     }
@@ -89,7 +89,7 @@ class TodoControllerTest {
                 )
                 //then
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(badRequestContent))
+                .andExpect(content().string(BAD_REQUEST_CONTENT))
                 .andDo(print())
                 .andReturn();
     }
@@ -103,7 +103,7 @@ class TodoControllerTest {
         mockMvc.perform(get("/todos/missMatch"))
                 //then
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(badRequestContent))
+                .andExpect(content().string(BAD_REQUEST_CONTENT))
                 .andReturn();
     }
 
@@ -112,14 +112,14 @@ class TodoControllerTest {
     void findTodo() throws Exception {
         //given
         Long givenId = 1L;
-        given(todoService.findOne(givenId)).willReturn(new Todo(new CreateTodoRequest("hello")));
+        given(todoService.findOne(givenId)).willReturn(new Todo(new CreateTodoRequest(NAME)));
 
 
         //when
         mockMvc.perform(get("/todos/" + givenId))
                 //then
                 .andExpect(status().isOk())
-                .andExpect(content().string(todoResponseContent))
+                .andExpect(content().string(TODO_RESPONSE_CONTENT))
                 .andDo(print())
                 .andReturn();
     }
@@ -135,7 +135,7 @@ class TodoControllerTest {
         mockMvc.perform(get("/todos/" + givenId))
                 //then
                 .andExpect(status().isNotFound())
-                .andExpect(content().string(notFoundContent))
+                .andExpect(content().string(NOT_FOUND_CONTENT))
                 .andDo(print())
                 .andReturn();
     }
@@ -205,7 +205,7 @@ class TodoControllerTest {
                 )
                 //then
                 .andExpect(status().isNotFound())
-                .andExpect(content().string(notFoundContent))
+                .andExpect(content().string(NOT_FOUND_CONTENT))
                 .andDo(print())
                 .andReturn();
     }
@@ -220,7 +220,7 @@ class TodoControllerTest {
         mockMvc.perform(put("/todos/" + givenId))
                 //then
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(badRequestContent))
+                .andExpect(content().string(BAD_REQUEST_CONTENT))
                 .andDo(print())
                 .andReturn();
     }
@@ -235,7 +235,7 @@ class TodoControllerTest {
         mockMvc.perform(put("/todos/" + givenId))
                 //then
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(badRequestContent))
+                .andExpect(content().string(BAD_REQUEST_CONTENT))
                 .andDo(print())
                 .andReturn();
     }
@@ -250,7 +250,7 @@ class TodoControllerTest {
         requestBody.put("name", "hello");
         requestBody.put("completed", false);
 
-        given(todoService.update(eq(givenId), any(UpdateTodoRequest.class))).willReturn(new Todo(new CreateTodoRequest("hello")));
+        given(todoService.update(eq(givenId), any(UpdateTodoRequest.class))).willReturn(new Todo(new CreateTodoRequest(NAME)));
 
         //when
         mockMvc.perform(put("/todos/" + givenId)
@@ -259,7 +259,7 @@ class TodoControllerTest {
                 )
                 //then
                 .andExpect(status().isOk())
-                .andExpect(content().string(todoResponseContent))
+                .andExpect(content().string(TODO_RESPONSE_CONTENT))
                 .andDo(print())
                 .andReturn();
     }
@@ -276,7 +276,7 @@ class TodoControllerTest {
         mockMvc.perform((delete("/todos/" + givenId)))
                 //then
                 .andExpect(status().isNotFound())
-                .andExpect(content().string(notFoundContent))
+                .andExpect(content().string(NOT_FOUND_CONTENT))
                 .andDo(print())
                 .andReturn();
     }
@@ -291,7 +291,7 @@ class TodoControllerTest {
         mockMvc.perform(delete("/todos/" + givenId))
                 //then
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(badRequestContent))
+                .andExpect(content().string(BAD_REQUEST_CONTENT))
                 .andDo(print())
                 .andReturn();
     }

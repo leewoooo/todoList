@@ -1,6 +1,8 @@
 package leewoooo.todo.dto.todo.reqeust;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
 

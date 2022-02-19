@@ -1,4 +1,4 @@
-package leewoooo.todo.service;
+package leewoooo.todo.service.todo;
 
 import leewoooo.todo.domain.Todo;
 import leewoooo.todo.dto.todo.reqeust.CreateTodoRequest;
@@ -21,14 +21,14 @@ class TodoServiceTest {
     @DisplayName("Todo 등록")
     void register() {
         //given
-        CreateTodoRequest req = new CreateTodoRequest("Hello");
+        CreateTodoRequest req = new CreateTodoRequest(TodoRepositoryStub.NAME);
         Todo todo = new Todo(req);
 
         //when
         Todo saved = todoService.register(req);
 
         //then
-        assertThat(saved.getName()).isEqualTo("Hello");
+        assertThat(saved.getName()).isEqualTo(TodoRepositoryStub.NAME);
     }
 
     @Test
@@ -73,7 +73,7 @@ class TodoServiceTest {
         //given
         Long givenId = TodoRepositoryStub.NOT_EXIST_ID;
 
-        UpdateTodoRequest req = new UpdateTodoRequest("hello", false);
+        UpdateTodoRequest req = new UpdateTodoRequest(TodoRepositoryStub.NAME, false);
 
         //when
         //then
