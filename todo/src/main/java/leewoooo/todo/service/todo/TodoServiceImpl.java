@@ -1,4 +1,4 @@
-package leewoooo.todo.service;
+package leewoooo.todo.service.todo;
 
 import leewoooo.todo.domain.Todo;
 import leewoooo.todo.dto.error.ErrorCode;
@@ -26,8 +26,7 @@ public class TodoServiceImpl implements TodoService {
     @Override
     @Transactional(readOnly = true)
     public Todo findOne(Long id) {
-        return todoRepository.findById(id)
-                .orElseThrow(() -> new CustomHttpException(ErrorCode.NOT_FOUND));
+        return findOneById(id);
     }
 
     @Override
@@ -38,8 +37,7 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public Todo update(Long id, UpdateTodoRequest req) {
-        Todo selected = todoRepository.findById(id)
-                .orElseThrow(() -> new CustomHttpException(ErrorCode.NOT_FOUND));
+        Todo selected = findOneById(id);
         selected.updateTodo(req);
 
         return todoRepository.save(selected);
@@ -53,4 +51,8 @@ public class TodoServiceImpl implements TodoService {
         todoRepository.deleteById(id);
     }
 
+    private Todo findOneById(Long id) {
+        return todoRepository.findById(id)
+                .orElseThrow(() -> new CustomHttpException(ErrorCode.NOT_FOUND));
+    }
 }

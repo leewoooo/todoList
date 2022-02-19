@@ -5,7 +5,7 @@ import leewoooo.todo.dto.todo.reqeust.CreateTodoRequest;
 import leewoooo.todo.dto.todo.reqeust.UpdateTodoRequest;
 import leewoooo.todo.dto.todo.response.TodoListResponse;
 import leewoooo.todo.dto.todo.response.TodoResponse;
-import leewoooo.todo.service.TodoService;
+import leewoooo.todo.service.todo.TodoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

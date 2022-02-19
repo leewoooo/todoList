@@ -1,4 +1,4 @@
-package leewoooo.todo.service;
+package leewoooo.todo.service.todo;
 
 import leewoooo.todo.domain.Todo;
 import leewoooo.todo.dto.todo.reqeust.CreateTodoRequest;
