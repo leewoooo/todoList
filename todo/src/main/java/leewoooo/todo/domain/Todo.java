@@ -27,13 +27,13 @@ public class Todo extends TimeStamp {
 
     private LocalDateTime completedAt;
 
-    public Todo(CreateTodoRequest req){
+    public Todo(CreateTodoRequest req) {
         this.name = req.getName();
         this.completed = false;
     }
 
-    public void updateTodo(UpdateTodoRequest req){
-        this.name = req.getName();
+    public void updateTodo(UpdateTodoRequest req) {
+        this.name = req.getName().isEmpty() ? this.getName() : req.getName();
         this.completed = req.getCompleted() == null ? this.completed : req.getCompleted();
         this.completedAt = this.getCompleted() ? LocalDateTime.now() : null;
     }
