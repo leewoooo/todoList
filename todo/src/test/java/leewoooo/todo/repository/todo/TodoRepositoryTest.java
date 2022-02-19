@@ -113,11 +113,7 @@ class TodoRepositoryTest {
         CreateTodoRequest createReq = new CreateTodoRequest("hello");
         Todo todo = new Todo(createReq);
 
-        UpdateTodoRequest updateReq = UpdateTodoRequest
-                .builder()
-                .name("changed")
-                .completed(true)
-                .build();
+        UpdateTodoRequest updateReq = new UpdateTodoRequest("changed", true);
 
         //when
         Todo saved = todoRepository.save(todo);
@@ -138,11 +134,7 @@ class TodoRepositoryTest {
         CreateTodoRequest createReq = new CreateTodoRequest("hello");
         Todo todo = new Todo(createReq);
 
-        UpdateTodoRequest updateReq = UpdateTodoRequest
-                .builder()
-                .name("changed")
-                .completed(null)
-                .build();
+        UpdateTodoRequest updateReq = new UpdateTodoRequest("changed", null);
 
         //when
         Todo saved = todoRepository.save(todo);
