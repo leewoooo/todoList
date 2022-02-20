@@ -6,6 +6,7 @@ import leewoooo.todo.dto.todo.reqeust.UpdateTodoRequest;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -33,7 +34,7 @@ public class Todo extends TimeStamp {
     }
 
     public void updateTodo(UpdateTodoRequest req) {
-        this.name = req.getName().isEmpty() ? this.getName() : req.getName();
+        this.name = StringUtils.hasText(req.getName()) ? req.getName() : this.getName();
         this.completed = req.getCompleted() == null ? this.completed : req.getCompleted();
         this.completedAt = this.getCompleted() ? LocalDateTime.now() : null;
     }
